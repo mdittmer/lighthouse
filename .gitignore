@@ -17,3 +17,8 @@ last-run-results.html
 *.screenshots.html
 
 closure-error.log
+
+typings
+lighthouse-cli/*.map
+lighthouse-cli/index.js
+lighthouse-cli/printer.js

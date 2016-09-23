@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+/// <reference path="typings/index.d.ts" />
+
 /**
  * @license
  * Copyright 2016 Google Inc. All rights reserved.
@@ -26,7 +27,7 @@ if (!environment.checkNodeCompatibility()) {
 
 const path = require('path');
 const yargs = require('yargs');
-const Printer = require('./printer');
+import * as Printer from './printer';
 const lighthouse = require('../lighthouse-core');
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 const ChromeLauncher = require('./chrome-launcher');
@@ -95,8 +96,7 @@ Example: --output-path=./lighthouse-results.html`
     'quiet',
     'help'
   ])
-
-  .choices('output', Object.keys(Printer.OUTPUT_MODE))
+  .choices('output', Object.keys(Printer.OUTPUT_MODE).map(k => Printer.OUTPUT_MODE[k]))
 
   // default values
   .default('mobile', true)
@@ -227,7 +227,7 @@ function run() {
     lighthouseRun(urls).catch(handleError);
   } else {
     // because you can't cancel a promise yet
-    const SIGINT = Symbol('SIGINT');
+    const SIGINT = 'SIGINT';
     const isSigint = new Promise((resolve, reject) => {
       process.on('SIGINT', () => reject(SIGINT));
     });

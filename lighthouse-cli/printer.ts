@@ -1,3 +1,5 @@
+/// <reference path="typings/index.d.ts" />
+
 /**
  * @license
  * Copyright 2016 Google Inc. All rights reserved.
@@ -16,6 +18,13 @@
  */
 
 'use strict';
+
+type Mode = 'pretty' | 'json' | 'html';
+interface Results {
+  url: string;
+  aggregations: any[];
+  audits: Object;
+};
 
 const fs = require('fs');
 const ReportGenerator = require('../lighthouse-core/report/report-generator');
@@ -39,13 +48,11 @@ const OUTPUT_MODE = {
 
 /**
  * Verify output mode.
- * @param {string} mode
- * @return {OUTPUT_MODE}
  */
-function checkOutputMode(mode) {
+function checkOutputMode(mode: string): Mode {
   if (!OUTPUT_MODE.hasOwnProperty(mode)) {
     log.warn('Printer', `Unknown output mode ${mode}; using pretty`);
-    return OUTPUT_MODE.pretty;
+    return OUTPUT_MODE.pretty as Mode;
   }
 
   return OUTPUT_MODE[mode];
@@ -53,9 +60,8 @@ function checkOutputMode(mode) {
 
 /**
  * Verify output path to use, either stdout or a file path.
- * @param {string} path
  */
-function checkOutputPath(path) {
+function checkOutputPath(path: string): string {
   if (!path) {
     log.warn('Printer', 'No output path set; using stdout');
     return 'stdout';
@@ -64,8 +70,7 @@ function checkOutputPath(path) {
   return path;
 }
 
-function formatScore(score, suffix) {
-  suffix = suffix || '';
+function formatScore(score, suffix: string = '') {
   const green = '\x1B[32m';
   const red = '\x1B[31m';
   const yellow = '\x1b[33m';
@@ -92,12 +97,8 @@ function formatScore(score, suffix) {
 
 /**
  * Creates the results output in a format based on the `mode`.
- *
- * @param {{url: string, aggregations: !Array<*>}} results
- * @param {OUTPUT_MODE} outputMode
- * @return {string}
  */
-function createOutput(results, outputMode) {
+function createOutput(results: Results, outputMode: Mode): string {
   const reportGenerator = new ReportGenerator();
 
   // HTML report.
@@ -160,11 +161,8 @@ function createOutput(results, outputMode) {
 /* istanbul ignore next */
 /**
  * Writes the output to stdout.
- *
- * @param {string} output
- * @return {!Promise}
  */
-function writeToStdout(output) {
+function writeToStdout(output: string): Promise<undefined> {
   return new Promise((resolve, reject) => {
     // small delay to avoid race with debug() logs
     setTimeout(_ => {
@@ -176,13 +174,11 @@ function writeToStdout(output) {
 
 /**
  * Writes the output to a file.
- *
- * @param {string} filePath The destination path
- * @param {string} output The output to write
- * @param {string} outputMode Output mode; either 'pretty', 'json', or 'html'.
- * @return {Promise}
  */
-function writeFile(filePath, output, outputMode) {
+function writeFile(
+  filePath: string,
+  output: string,
+  outputMode: Mode): Promise<undefined> {
   return new Promise((resolve, reject) => {
     // TODO: make this mkdir to the filePath.
     fs.writeFile(filePath, output, 'utf8', err => {
@@ -197,13 +193,8 @@ function writeFile(filePath, output, outputMode) {
 
 /**
  * Writes the results.
- *
- * @param {{url: string, aggregations: !Array<*>}} results
- * @param {string} mode Output mode; either 'pretty', 'json', or 'html'.
- * @param {string} path The output path to use, either stdout or a file path.
- * @return {!Promise}
  */
-function write(results, mode, path) {
+function write(results: Results, mode: Mode, path: string): Promise<undefined> {
   return new Promise((resolve, reject) => {
     const outputMode = checkOutputMode(mode);
     const outputPath = checkOutputPath(path);
@@ -223,10 +214,10 @@ function write(results, mode, path) {
   });
 }
 
-module.exports = {
+export {
   checkOutputMode,
   checkOutputPath,
   createOutput,
   write,
   OUTPUT_MODE
-};
+}
