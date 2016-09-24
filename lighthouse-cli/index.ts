@@ -30,7 +30,7 @@ const yargs = require('yargs');
 import * as Printer from './printer';
 const lighthouse = require('../lighthouse-core');
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
-const ChromeLauncher = require('./chrome-launcher');
+import {ChromeLauncher} from './chrome-launcher';
 
 const perfOnlyConfig = require('../lighthouse-core/config/perf.json');
 

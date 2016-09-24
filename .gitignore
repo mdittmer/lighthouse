@@ -22,3 +22,4 @@ typings
 lighthouse-cli/*.map
 lighthouse-cli/index.js
 lighthouse-cli/printer.js
+lighthouse-cli/chrome-launcher.js
