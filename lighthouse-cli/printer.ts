@@ -194,7 +194,7 @@ function writeFile(
 /**
  * Writes the results.
  */
-function write(results: Results, mode: Mode, path: string): Promise<undefined> {
+function write(results: Results, mode: Mode, path: string): Promise<Results> {
   return new Promise((resolve, reject) => {
     const outputMode = checkOutputMode(mode);
     const outputPath = checkOutputPath(path);

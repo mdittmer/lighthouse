@@ -42,8 +42,7 @@ class ChromeLauncher {
   pidFile: string
   chrome: childProcess.ChildProcess
 
-  constructor(opts) {
-    opts = opts || {};
+  constructor(opts: {autoSelectChrome?: Boolean} = {}) {
     // choose the first one (default)
     this.autoSelectChrome = defaults(opts.autoSelectChrome, true);
   }
