@@ -10,7 +10,7 @@
         "typings"
     ],
     "include": [
-        "index.ts"
+        "*.ts"
     ]
 
 }
