@@ -43,7 +43,10 @@ class ChromeLauncher {
   pidFile: string
   chrome: childProcess.ChildProcess
 
-  constructor(opts: {autoSelectChrome?: Boolean} = {}) {
+  // We can not use default args here due to support node pre 6.
+  constructor(opts?: {autoSelectChrome?: Boolean}) {
+    opts = opts || {};
+
     // choose the first one (default)
     this.autoSelectChrome = defaults(opts.autoSelectChrome, true);
   }

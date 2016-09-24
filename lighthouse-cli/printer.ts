@@ -70,7 +70,10 @@ function checkOutputPath(path: string): string {
   return path;
 }
 
-function formatScore(score, suffix: string = '') {
+function formatScore(score, suffix?: string) {
+  // Until we only support node 6 we can not use default args.
+  suffix = suffix || '';
+
   const green = '\x1B[32m';
   const red = '\x1B[31m';
   const yellow = '\x1b[33m';
