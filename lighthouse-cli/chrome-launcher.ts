@@ -22,11 +22,12 @@
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as chromeFinder from './chrome-finder';
+import {ask} from './ask';
+
 const mkdirp = require('mkdirp');
 const net = require('net');
 const rimraf = require('rimraf');
-const ask = require('./ask');
-const chromeFinder = require('./chrome-finder');
 
 const spawn = childProcess.spawn;
 const execSync = childProcess.execSync;
