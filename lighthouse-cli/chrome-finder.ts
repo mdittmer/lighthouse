@@ -46,13 +46,6 @@ export function darwin() {
       }
     });
 
-  /* https://github.com/Microsoft/TypeScript/issues/6574
-  const priorities = new Map([
-    [/^\/Volumes\//, -1],
-    [/^\/Applications\//, 100],
-    [new RegExp(`^${process.env.HOME}/Applications/`), 50]
-  ]);
- */
   const priorities: {regex: RegExp, weight: number}[] = [{
       regex: /^\/Volumes\//,
       weight: -1
