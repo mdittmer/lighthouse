@@ -19,6 +19,7 @@
 
 'use strict';
 
+const _SIGINT = 'SIGINT';
 const environment = require('../lighthouse-core/lib/environment.js');
 if (!environment.checkNodeCompatibility()) {
   console.warn('Compatibility error', 'Lighthouse requires node 5+ or 4 with --harmony');
@@ -227,15 +228,14 @@ function run() {
     lighthouseRun(urls).catch(handleError);
   } else {
     // because you can't cancel a promise yet
-    const SIGINT = 'SIGINT';
     const isSigint = new Promise((resolve, reject) => {
-      process.on('SIGINT', () => reject(SIGINT));
+      process.on(_SIGINT, () => reject(_SIGINT));
     });
 
     Promise
       .race([launchChromeAndRun(urls), isSigint])
       .catch(maybeSigint => {
-        if (maybeSigint === SIGINT) {
+        if (maybeSigint === _SIGINT) {
           return cleanup
             .doCleanup()
             .then(() => process.exit(130))
