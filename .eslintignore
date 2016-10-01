@@ -14,3 +14,4 @@ coverage/**
 # Typescript compiled
 !lighthouse-cli/index.js
 lighthouse-cli/*.js
+lighthouse-cli/commands/*.js

@@ -35,6 +35,7 @@ import * as Printer from './printer';
 const lighthouse = require('../lighthouse-core');
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 import {ChromeLauncher} from './chrome-launcher';
+import * as Commands from './commands/commands';
 
 const perfOnlyConfig = require('../lighthouse-core/config/perf.json');
 
@@ -117,22 +118,14 @@ Example: --output-path=./lighthouse-results.html`
   })
   .argv;
 
+// Process terminating command
 if (cli.listAllAudits) {
-  const audits = lighthouse
-      .getAuditList()
-      .map(i => {
-        return i.replace(/\.js$/, '');
-      });
-
-  process.stdout.write(JSON.stringify({audits}));
-  process.exit(0);
+  Commands.ListAudits();
 }
 
+// Process terminating command
 if (cli.listTraceCategories) {
-  const traceCategories = lighthouse.traceCategories;
-
-  process.stdout.write(JSON.stringify({traceCategories}));
-  process.exit(0);
+  Commands.ListTraceCategories();
 }
 
 const urls = cli._;

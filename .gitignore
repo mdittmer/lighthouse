@@ -22,3 +22,6 @@ typings
 !lighthouse-cli/index.js
 lighthouse-cli/*.map
 lighthouse-cli/*.js
+
+lighthouse-cli/commands/*.map
+lighthouse-cli/commands/*.js
