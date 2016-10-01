@@ -21,7 +21,7 @@ const HTTPRedirectGather = require('../../../gather/gatherers/http-redirect');
 const assert = require('assert');
 let httpRedirectGather;
 
-describe.only('HTTP Redirect gatherer', () => {
+describe('HTTP Redirect gatherer', () => {
   // Reset the Gatherer before each test.
   beforeEach(() => {
     httpRedirectGather = new HTTPRedirectGather();
