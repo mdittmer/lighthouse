@@ -21,11 +21,12 @@
 
 const _SIGINT = 'SIGINT';
 const _ERROR_EXIT_CODE = 130;
+const _RUNTIME_ERROR_CODE = 1;
 
 const environment = require('../lighthouse-core/lib/environment.js');
 if (!environment.checkNodeCompatibility()) {
   console.warn('Compatibility error', 'Lighthouse requires node 5+ or 4 with --harmony');
-  process.exit(1);
+  process.exit(_RUNTIME_ERROR_CODE);
 }
 
 import * as path from 'path';
@@ -208,13 +209,13 @@ function showConnectionError() {
     'If you\'re using lighthouse with --skip-autolaunch, ' +
     'make sure you\'re running some other Chrome with a debugger.'
   );
-  process.exit(1);
+  process.exit(_RUNTIME_ERROR_CODE);
 }
 
 function showRuntimeError(err) {
   console.error('Runtime error encountered:', err);
   console.error(err.stack);
-  process.exit(1);
+  process.exit(_RUNTIME_ERROR_CODE);
 }
 
 function handleError(err) {
