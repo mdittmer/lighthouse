@@ -21,7 +21,7 @@ const HTTPSGather = require('../../../gather/gatherers/https');
 const assert = require('assert');
 let httpsGather;
 
-describe.only('HTTPS gatherer', () => {
+describe('HTTPS gatherer', () => {
   // Reset the Gatherer before each test.
   beforeEach(() => {
     httpsGather = new HTTPSGather();
