@@ -2,4 +2,4 @@
 
 'use strict';
 
-require('./dist/bin.js');
+require('./bin.js');

@@ -12,4 +12,5 @@ lighthouse-extension/app/scripts
 coverage/**
 
 # Typescript compiled
-lighthouse-cli/dist
+!lighthouse-cli/index.js
+lighthouse-cli/*.js

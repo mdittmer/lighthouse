@@ -19,4 +19,6 @@ last-run-results.html
 closure-error.log
 
 typings
-lighthouse-cli/dist
+!lighthouse-cli/index.js
+lighthouse-cli/*.map
+lighthouse-cli/*.js
