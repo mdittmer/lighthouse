@@ -17,6 +17,10 @@
 
 /* eslint-env mocha */
 
+process.on('unhandledRejection', reason => {
+  console.log('Reason: ', reason);
+});
+
 const HTTPRedirectGather = require('../../../gather/gatherers/http-redirect');
 const assert = require('assert');
 let httpRedirectGather;
@@ -66,6 +70,9 @@ describe('HTTP Redirect gatherer', () => {
       }
     }).then(_ => {
       assert.ok(httpRedirectGather.artifact.value);
+    }).catch(err => {
+      console.log('********* returns an artifact ******');
+      console.log(JSON.stringify(err));
     });
   });
 
@@ -80,7 +87,7 @@ describe('HTTP Redirect gatherer', () => {
       assert.equal(httpRedirectGather.artifact.value, false);
       assert.ok(httpRedirectGather.artifact.debugString);
     }).catch(err => {
-      console.log('********* whaaaaaaaaat ******');
+      console.log('********* handles driver failure ******');
       console.log(JSON.stringify(err));
     });
   });
@@ -115,6 +122,9 @@ describe('HTTP Redirect gatherer', () => {
       });
     }).then(_ => {
       assert.deepStrictEqual(httpRedirectGather.artifact, artifact);
+    }).catch(err => {
+      console.log('********* handles driver timeout ******');
+      console.log(JSON.stringify(err));
     });
   });
 });
