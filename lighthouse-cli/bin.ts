@@ -96,11 +96,11 @@ Example: --output-path=./lighthouse-results.html`
     'quiet',
     'help'
   ])
-  .choices('output', Object.keys(Printer.OutputMode).map(k => Printer.OutputMode[k]))
+  .choices('output', Printer.GetValidOutputOptions())
 
   // default values
   .default('mobile', true)
-  .default('output', Printer.OutputMode.pretty)
+  .default('output', Printer.GetValidOutputOptions()[Printer.OutputMode.pretty])
   .default('output-path', 'stdout')
   .check(argv => {
     // Make sure lighthouse has been passed a url, or at least one of --list-all-audits

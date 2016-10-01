@@ -27,6 +27,7 @@
  */
 enum OutputMode { pretty, json, html };
 type Mode = 'pretty' | 'json' | 'html';
+const Modes = ['pretty', 'json', 'html'];
 
 interface Results {
   url: string;
@@ -43,14 +44,14 @@ const log = require('../lighthouse-core/lib/log');
  * Verify output mode.
  */
 function checkOutputMode(mode: Mode): OutputMode {
-  switch (mode) {
-    case 'json': return OutputMode.json;
-    case 'html': return OutputMode.html;
-    case 'pretty': return OutputMode.pretty;
-    default:
+  let modeIndex = Modes.indexOf(mode);
+
+  if (modeIndex === -1) {
       log.warn('Printer', `Unknown output mode ${mode}. using pretty`);
       return OutputMode.pretty;
   }
+
+  return modeIndex;
 }
 
 /**
@@ -209,10 +210,15 @@ function write(results: Results, mode: Mode, path: string): Promise<Results> {
   });
 }
 
+function GetValidOutputOptions():Array<String> {
+  return Modes;
+}
+
 export {
   checkOutputMode,
   checkOutputPath,
   createOutput,
   write,
-  OutputMode
+  OutputMode,
+  GetValidOutputOptions,
 }
