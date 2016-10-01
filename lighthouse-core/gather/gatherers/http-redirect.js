@@ -17,6 +17,7 @@
 'use strict';
 
 const Gatherer = require('./gatherer');
+const assert = require('assert');
 
 /**
  * This gatherer changes the options.url so that its pass loads the http page.
@@ -44,6 +45,7 @@ class HTTPRedirect extends Gatherer {
 
     const securityPromise = options.driver.getSecurityState()
       .then(state => {
+        assert.ok(state.schemeIsCryptographic);
         return {
           value: state.schemeIsCryptographic
         };
