@@ -45,7 +45,7 @@ class HTTPRedirect extends Gatherer {
 
     const securityPromise = options.driver.getSecurityState()
       .then(state => {
-        assert.ok(state.schemeIsCryptographic);
+        assert.ok(state);
         return {
           value: state.schemeIsCryptographic
         };
