@@ -4,7 +4,7 @@
   "description": "Lighthouse",
   "main": "./lighthouse-core/index.js",
   "bin": {
-    "lighthouse": "./lighthouse-cli/bin.js",
+    "lighthouse": "./lighthouse-cli/index.js",
     "chrome-debug": "lighthouse-core/scripts/launch-chrome.sh"
   },
   "engines": {
