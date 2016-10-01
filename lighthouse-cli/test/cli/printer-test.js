@@ -26,7 +26,7 @@ const sampleResults = require('../fixtures/sample.json');
 describe('Printer', () => {
   it('accepts valid output modes', () => {
     const mode = 'json';
-    assert.equal(Printer.checkOutputMode(mode), mode);
+    assert.equal(Printer.checkOutputMode(mode), Printer.OutputMode.json);
   });
 
   it('rejects invalid output modes', () => {
@@ -45,13 +45,13 @@ describe('Printer', () => {
   });
 
   it('creates JSON for results', () => {
-    const mode = 'json';
+    const mode = Printer.OutputMode.json;
     const jsonOutput = Printer.createOutput(sampleResults, mode);
     assert.doesNotThrow(_ => JSON.parse(jsonOutput));
   });
 
   it('creates Pretty Printed results', () => {
-    const mode = 'pretty';
+    const mode = Printer.OutputMode.pretty;
     const prettyOutput = Printer.createOutput(sampleResults, mode);
 
     // Just check there's no HTML / JSON there.
@@ -60,7 +60,7 @@ describe('Printer', () => {
   });
 
   it('creates HTML for results', () => {
-    const mode = 'html';
+    const mode = Printer.OutputMode.html;
     const htmlOutput = Printer.createOutput(sampleResults, mode);
     assert.ok(/<!doctype/gim.test(htmlOutput));
   });

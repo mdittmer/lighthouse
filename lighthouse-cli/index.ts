@@ -25,7 +25,7 @@ if (!environment.checkNodeCompatibility()) {
   process.exit(1);
 }
 
-const path = require('path');
+import * as path from 'path';
 const yargs = require('yargs');
 import * as Printer from './printer';
 const lighthouse = require('../lighthouse-core');
@@ -96,11 +96,11 @@ Example: --output-path=./lighthouse-results.html`
     'quiet',
     'help'
   ])
-  .choices('output', Object.keys(Printer.OUTPUT_MODE).map(k => Printer.OUTPUT_MODE[k]))
+  .choices('output', Object.keys(Printer.OutputMode).map(k => Printer.OutputMode[k]))
 
   // default values
   .default('mobile', true)
-  .default('output', Printer.OUTPUT_MODE.pretty)
+  .default('output', Printer.OutputMode.pretty)
   .default('output-path', 'stdout')
   .check(argv => {
     // Make sure lighthouse has been passed a url, or at least one of --list-all-audits

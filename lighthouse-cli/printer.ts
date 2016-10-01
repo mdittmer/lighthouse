@@ -19,7 +19,15 @@
 
 'use strict';
 
+/**
+ * An enumeration of acceptable output modes:
+ *   'pretty': Pretty print the results
+ *   'json': JSON formatted results
+ *   'html': An HTML report
+ */
+enum OutputMode { pretty, json, html };
 type Mode = 'pretty' | 'json' | 'html';
+
 interface Results {
   url: string;
   aggregations: any[];
@@ -32,30 +40,17 @@ const Formatter = require('../lighthouse-core/formatters/formatter');
 const log = require('../lighthouse-core/lib/log');
 
 /**
- * An enumeration of acceptable output modes:
- * <ul>
- *   <li>'pretty': Pretty print the results</li>
- *   <li>'json': JSON formatted results</li>
- *   <li>'html': An HTML report</li>
- * </ul>
- * @enum {string}
- */
-const OUTPUT_MODE = {
-  pretty: 'pretty',
-  json: 'json',
-  html: 'html'
-};
-
-/**
  * Verify output mode.
  */
-function checkOutputMode(mode: string): Mode {
-  if (!OUTPUT_MODE.hasOwnProperty(mode)) {
-    log.warn('Printer', `Unknown output mode ${mode}; using pretty`);
-    return OUTPUT_MODE.pretty as Mode;
+function checkOutputMode(mode: Mode): OutputMode {
+  switch (mode) {
+    case 'json': return OutputMode.json;
+    case 'html': return OutputMode.html;
+    case 'pretty': return OutputMode.pretty;
+    default:
+      log.warn('Printer', `Unknown output mode ${mode}. using pretty`);
+      return OutputMode.pretty;
   }
-
-  return OUTPUT_MODE[mode];
 }
 
 /**
@@ -101,16 +96,16 @@ function formatScore(score, suffix?: string) {
 /**
  * Creates the results output in a format based on the `mode`.
  */
-function createOutput(results: Results, outputMode: Mode): string {
+function createOutput(results: Results, outputMode: OutputMode): string {
   const reportGenerator = new ReportGenerator();
 
   // HTML report.
-  if (outputMode === 'html') {
+  if (outputMode === OutputMode.html) {
     return reportGenerator.generateHTML(results, {inline: true});
   }
 
   // JSON report.
-  if (outputMode === 'json') {
+  if (outputMode === OutputMode.json) {
     return JSON.stringify(results, null, 2);
   }
 
@@ -178,17 +173,14 @@ function writeToStdout(output: string): Promise<undefined> {
 /**
  * Writes the output to a file.
  */
-function writeFile(
-  filePath: string,
-  output: string,
-  outputMode: Mode): Promise<undefined> {
+function writeFile(filePath: string, output: string, outputMode: OutputMode): Promise<undefined> {
   return new Promise((resolve, reject) => {
     // TODO: make this mkdir to the filePath.
     fs.writeFile(filePath, output, 'utf8', err => {
       if (err) {
         return reject(err);
       }
-      log.log('Printer', `${outputMode} output written to ${filePath}`);
+      log.log('Printer', `${OutputMode[outputMode]} output written to ${filePath}`);
       resolve();
     });
   });
@@ -222,5 +214,5 @@ export {
   checkOutputPath,
   createOutput,
   write,
-  OUTPUT_MODE
+  OutputMode
 }
