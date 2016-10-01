@@ -20,6 +20,8 @@
 'use strict';
 
 const _SIGINT = 'SIGINT';
+const _ERROR_EXIT_CODE = 130;
+
 const environment = require('../lighthouse-core/lib/environment.js');
 if (!environment.checkNodeCompatibility()) {
   console.warn('Compatibility error', 'Lighthouse requires node 5+ or 4 with --harmony');
@@ -238,12 +240,10 @@ function run() {
         if (maybeSigint === _SIGINT) {
           return cleanup
             .doCleanup()
-            .then(() => process.exit(130))
             .catch(err => {
               console.error(err);
               console.error(err.stack);
-              process.exit(130);
-            });
+            }).then(() => process.exit(_ERROR_EXIT_CODE));
         }
         return handleError(maybeSigint);
       });
