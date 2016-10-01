@@ -79,6 +79,9 @@ describe('HTTP Redirect gatherer', () => {
     }).then(_ => {
       assert.equal(httpRedirectGather.artifact.value, false);
       assert.ok(httpRedirectGather.artifact.debugString);
+    }).catch(err => {
+      console.log('********* whaaaaaaaaat ******');
+      console.log(JSON.stringify(err));
     });
   });
 
