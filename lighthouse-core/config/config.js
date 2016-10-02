@@ -269,7 +269,16 @@ class Config {
     }
 
     // We don't want to mutate the original config object
-    configJSON = JSON.parse(JSON.stringify(configJSON));
+    let inputConfig = configJSON;
+    configJSON = JSON.parse(JSON.stringify(inputConfig));
+    // Copy arrays that could contain plugins to allow for programmatic
+    // injection of plugins.
+    if (Array.isArray(inputConfig.passes.gatherers)) {
+      configJSON.passes.gatherers = Array.from(inputConfig.passes.gatherers);
+    }
+    if (Array.isArray(inputConfig.audits)) {
+      configJSON.audits = Array.from(inputConfig.audits);
+    }
     // Store the directory of the config path, if one was provided.
     this._configDir = configPath ? path.dirname(configPath) : undefined;
 

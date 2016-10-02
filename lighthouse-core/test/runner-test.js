@@ -19,6 +19,7 @@ const Runner = require('../runner');
 const fakeDriver = require('./gather/fake-driver');
 const Config = require('../config/config');
 const Audit = require('../audits/audit');
+const Gatherer = require('../gather/gatherers/gatherer');
 const assert = require('assert');
 const path = require('path');
 
@@ -216,5 +217,12 @@ describe('Runner', () => {
 
   it('rejects when given a URL without hostname', () => {
     return Runner.run({}, {url: 'https://'}).then(_ => assert.ok(false), _ => assert.ok(true));
+  });
+
+  it('returns given plugin when non-string passed to resolvePlugin()', () => {
+    class MyGatherer extends Gatherer {}
+    class MyAudit extends Audit {}
+    assert.equal(MyGatherer, Runner.resolvePlugin(MyGatherer, '.', 'gatherer'));
+    assert.equal(MyAudit, Runner.resolvePlugin(MyAudit, '.', 'audit'));
   });
 });

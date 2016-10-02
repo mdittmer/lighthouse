@@ -16,6 +16,8 @@
  */
 'use strict';
 
+const Gatherer = require('./gather/gatherers/gatherer');
+const Audit = require('./audits/audit');
 const GatherRunner = require('./gather/gather-runner');
 const Aggregate = require('./aggregator/aggregate');
 const assetSaver = require('./lib/asset-saver');
@@ -163,17 +165,22 @@ class Runner {
    * Resolves the location of the specified plugin and returns an absolute
    * string path to the file. Used for loading custom audits and gatherers.
    * Throws an error if no plugin is found.
-   * @param {string} plugin
+   * @param {(string|Gatherer|Audit)} plugin
    * @param {string=} configDir The absolute path to the directory of the config file, if there is one.
    * @param {string=} category Optional plugin category (e.g. 'audit') for better error messages.
    * @return {string}
    * @throws {Error}
    */
   static resolvePlugin(plugin, configDir, category) {
-    // First try straight `require()`. Unlikely to be specified relative to this
-    // file, but adds support for Lighthouse plugins in npm modules as
-    // `require()` walks up parent directories looking inside any node_modules/
-    // present. Also handles absolute paths.
+    // If a plugin was passed in, then just pass it back.
+    if (Gatherer.isPrototypeOf(plugin) || Audit.isPrototypeOf(plugin)) {
+      return plugin;
+    }
+
+    // Try straight `require()`. Unlikely to be specified relative to this file,
+    // but adds support for Lighthouse plugins in npm modules as `require()`
+    // walks up parent directories looking inside any node_modules/ present.
+    // Also handles absolute paths.
     try {
       return require.resolve(plugin);
     } catch (e) {}
