@@ -172,7 +172,7 @@ class Runner {
    * @throws {Error}
    */
   static resolvePlugin(plugin, configDir, category) {
-    // If a plugin was passed in, then just pass it back.
+    // If a plugin was passed in, then just return it.
     if (Gatherer.isPrototypeOf(plugin) || Audit.isPrototypeOf(plugin)) {
       return plugin;
     }
