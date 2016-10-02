@@ -163,10 +163,13 @@ function requireAudits(audits, configPath) {
   const coreList = Runner.getAuditList();
 
   return audits.map(audit => {
+    // If "audit" is an Audit class, return it. This happens when dynamic
+    // plugins directly inject a class.
     if (Audit.isPrototypeOf(audit)) {
       return audit;
     }
-    // First, see if the audit is a Lighthouse core audit.
+
+    // See if the audit is a Lighthouse core audit.
     const coreAudit = coreList.find(a => a === `${audit}.js`);
     let requirePath = `../audits/${audit}`;
     if (!coreAudit) {
