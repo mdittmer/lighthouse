@@ -163,6 +163,9 @@ function requireAudits(audits, configPath) {
   const coreList = Runner.getAuditList();
 
   return audits.map(audit => {
+    if (Audit.isPrototypeOf(audit)) {
+      return audit;
+    }
     // First, see if the audit is a Lighthouse core audit.
     const coreAudit = coreList.find(a => a === `${audit}.js`);
     let requirePath = `../audits/${audit}`;
@@ -273,7 +276,7 @@ class Config {
     configJSON = JSON.parse(JSON.stringify(inputConfig));
     // Copy arrays that could contain plugins to allow for programmatic
     // injection of plugins.
-    if (Array.isArray(inputConfig.passes.gatherers)) {
+    if (inputConfig.passes && Array.isArray(inputConfig.passes.gatherers)) {
       configJSON.passes.gatherers = Array.from(inputConfig.passes.gatherers);
     }
     if (Array.isArray(inputConfig.audits)) {
