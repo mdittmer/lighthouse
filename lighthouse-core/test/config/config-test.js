@@ -36,15 +36,25 @@ describe('Config', () => {
 
   it('doesn\'t change directly injected plugins', () => {
     class MyGatherer extends Gatherer {}
-    class MyAudit extends Audit {}
+    class MyAudit extends Audit {
+      static get meta() {
+        return {
+          name: 'MyAudit',
+          category: 'mine',
+          description: 'My audit',
+          requiredArtifacts: []
+        };
+      }
+      static audit() {}
+    }
     const config = {
-      passes: {
+      passes: [{
         gatherers: [MyGatherer]
-      },
+      }],
       audits: [MyAudit]
     };
     const newConfig = new Config(config);
-    assert.equal(MyGatherer, newConfig.passes.gatherers[0]);
+    assert.equal(MyGatherer, newConfig.passes[0].gatherers[0]);
     assert.equal(MyAudit, newConfig.audits[0]);
   });
 
